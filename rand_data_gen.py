@@ -21,7 +21,7 @@ with open('conversation_data.csv', 'w', newline='') as csvfile:
     fieldnames = ['conversation_id', 'conversation_type', 'user_id', 'user_email', 'usage_frequency', 'support_agent_id',
                   'started_at', 'closed_at', 'company_id', 'company_name',
                   'subscription_id', 'subscription_type', 'score_id',
-                  'created_at', 'score']
+                  'created_at', 'score', 'is_churned', 'churned_at']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -45,6 +45,8 @@ with open('conversation_data.csv', 'w', newline='') as csvfile:
             'score_id': fake.uuid4(),
             'created_at': started_at.strftime('%Y-%m-%d %H:%M:%S'),
             'score': fake.random_int(min=1, max=5),
+            'is_churned': fake.boolean(chance_of_getting_true=10),
+            'churned_at': fake.date_time_this_year() if fake.boolean(chance_of_getting_true=10) else None
         })
 
 print("CSV data generated successfully.")
