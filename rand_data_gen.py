@@ -15,7 +15,7 @@ subscription_types = ['free', 'enterprise', 'self-serve']
 conversation_types = ['sales inquiry', 'technical support', 'customer service']
 
 # Generate random data and write to CSV
-num_rows = 200  # Number of rows you want in the CSV
+num_rows = 300  # Number of rows you want in the CSV
 
 with open('conversation_data.csv', 'w', newline='') as csvfile:
     fieldnames = ['conversation_id', 'conversation_type', 'user_id', 'user_email', 'usage_frequency', 'support_agent_id',
@@ -45,7 +45,7 @@ with open('conversation_data.csv', 'w', newline='') as csvfile:
             'score_id': fake.uuid4(),
             'created_at': started_at.strftime('%Y-%m-%d %H:%M:%S'),
             'score': fake.random_int(min=1, max=5),
-            'is_churned': fake.boolean(chance_of_getting_true=10),
+            'is_churned': fake.boolean(chance_of_getting_true=50),
             'churned_at': fake.date_time_this_year() if fake.boolean(chance_of_getting_true=10) else None
         })
 
