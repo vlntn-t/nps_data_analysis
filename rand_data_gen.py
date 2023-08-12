@@ -11,6 +11,9 @@ fake = Faker()
 # Define possible subscription types
 subscription_types = ['free', 'enterprise', 'self-serve']
 
+# Define possible conversation types
+conversation_types = ['sales inquiry', 'technical support', 'customer service']
+
 # Generate random data and write to CSV
 num_rows = 200  # Number of rows you want in the CSV
 
@@ -28,6 +31,7 @@ with open('conversation_data.csv', 'w', newline='') as csvfile:
 
         writer.writerow({
             'conversation_id': fake.uuid4(),
+            'conversation_type': random.choice(conversation_types),
             'user_id': fake.random_int(min=1, max=1000),
             'user_email': fake.email(),
             'usage_frequency': fake.random_int(min=1, max=100),
