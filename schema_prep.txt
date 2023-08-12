@@ -1,0 +1,31 @@
+DELETE FROM visits;
+DELETE FROM users;
+DELETE FROM companies;
+
+-- Insert sample companies
+INSERT INTO companies (id, name) VALUES
+    (1, 'Company A'),
+    (2, 'Company B'),
+    (3, 'Company C');
+
+-- Insert sample users
+INSERT INTO users (id, email, Is_owner, company_id) VALUES
+    (1, 'user1@example.com', 1, 1),
+    (2, 'user2@example.com', 0, 1),
+    (3, 'user3@example.com', 0, 2),
+    (4, 'user4@example.com', 1, 3);
+
+-- Insert sample visits
+INSERT INTO visits (user_id, created_at) VALUES
+    (1, '2023-07-01'),
+    (1, '2023-07-05'),
+    (1, '2023-08-15'),
+    (2, '2023-07-03'),
+    (2, '2023-07-10'),
+    (2, '2023-08-20'),
+    (3, '2023-07-02'),
+    (3, '2023-08-01'),
+    (3, '2023-08-02'),
+    (4, '2023-07-15'),
+    (4, '2023-08-01'),
+    (4, '2023-08-15');

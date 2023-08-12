@@ -1,0 +1,101 @@
+SELECT
+    cd.user_id,
+    cd.user_email,
+    cd.is_owner,
+    cd.company_id,
+    cd.company_name,
+    COUNT(DISTINCT MONTH(cd.start_day), YEAR(cd.start_day)) AS count_active_months_in_past_year
+FROM (
+    SELECT 
+        d1.user_id, 
+        d1.user_email,
+        d1.is_owner,
+        d1.company_id,
+        d1.company_name,
+        d1.visit_day AS start_day,
+        d5.visit_day AS end_day
+    FROM (
+        SELECT
+            u.id AS user_id,
+            u.email AS user_email,
+            u.Is_owner AS is_owner,
+            u.company_id,
+            c.name AS company_name,
+            DATE(v.created_at) AS visit_day,
+            COUNT(v.id) AS visits_per_day
+        FROM
+            users u
+        JOIN
+            visits v ON u.id = v.user_id
+        JOIN
+            companies c ON u.company_id = c.id
+        WHERE
+            v.created_at >= NOW() - INTERVAL 1 YEAR
+        GROUP BY
+            u.id, u.email, u.Is_owner, u.company_id, c.name, DATE(v.created_at)
+        HAVING
+            COUNT(v.id) >= 10
+    ) AS d1
+    JOIN (
+        SELECT
+            u.id AS user_id,
+            DATE(v.created_at) AS visit_day
+        FROM
+            users u
+        JOIN
+            visits v ON u.id = v.user_id
+        WHERE
+            v.created_at >= NOW() - INTERVAL 1 YEAR
+        GROUP BY
+            u.id, DATE(v.created_at)
+        HAVING
+            COUNT(v.id) >= 10
+    ) AS d2 ON d1.user_id = d2.user_id AND DATE(d1.visit_day) + INTERVAL 1 DAY = d2.visit_day
+    JOIN (
+        SELECT
+            u.id AS user_id,
+            DATE(v.created_at) AS visit_day
+        FROM
+            users u
+        JOIN
+            visits v ON u.id = v.user_id
+        WHERE
+            v.created_at >= NOW() - INTERVAL 1 YEAR
+        GROUP BY
+            u.id, DATE(v.created_at)
+        HAVING
+            COUNT(v.id) >= 10
+    ) AS d3 ON d1.user_id = d3.user_id AND DATE(d1.visit_day) + INTERVAL 2 DAY = d3.visit_day
+    JOIN (
+        SELECT
+            u.id AS user_id,
+            DATE(v.created_at) AS visit_day
+        FROM
+            users u
+        JOIN
+            visits v ON u.id = v.user_id
+        WHERE
+            v.created_at >= NOW() - INTERVAL 1 YEAR
+        GROUP BY
+            u.id, DATE(v.created_at)
+        HAVING
+            COUNT(v.id) >= 10
+    ) AS d4 ON d1.user_id = d4.user_id AND DATE(d1.visit_day) + INTERVAL 3 DAY = d4.visit_day
+    JOIN (
+        SELECT
+            u.id AS user_id,
+            DATE(v.created_at) AS visit_day
+        FROM
+            users u
+        JOIN
+            visits v ON u.id = v.user_id
+        WHERE
+            v.created_at >= NOW() - INTERVAL 1 YEAR
+        GROUP BY
+            u.id, DATE(v.created_at)
+        HAVING
+            COUNT(v.id) >= 10
+    ) AS d5 ON d1.user_id = d5.user_id AND DATE(d1.visit_day) + INTERVAL 4 DAY = d5.visit_day
+) AS cd
+GROUP BY
+    cd.user_id, cd.user_email, cd.is_owner, cd.company_id, cd.company_name;
