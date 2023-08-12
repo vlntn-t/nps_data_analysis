@@ -18,7 +18,7 @@ conversation_types = ['sales inquiry', 'technical support', 'customer service']
 num_rows = 200  # Number of rows you want in the CSV
 
 with open('conversation_data.csv', 'w', newline='') as csvfile:
-    fieldnames = ['conversation_id', 'user_id', 'user_email', 'usage_frequency', 'support_agent_id',
+    fieldnames = ['conversation_id', 'conversation_type', 'user_id', 'user_email', 'usage_frequency', 'support_agent_id',
                   'started_at', 'closed_at', 'company_id', 'company_name',
                   'subscription_id', 'subscription_type', 'score_id',
                   'created_at', 'score']
