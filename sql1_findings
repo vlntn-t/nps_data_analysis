@@ -1,0 +1,1 @@
+1. Instead of INTERVAL 30 DAY, you should use INTERVAL '30 DAY'
